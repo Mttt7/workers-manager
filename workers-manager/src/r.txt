@@ -1,0 +1,98 @@
+
+function Workers(){
+
+  const [workers, setWorkers] = useState(
+    [
+      {id:1 ,name:'John', surname:'Smith',age:'56', branch:'IT', workingYears:11},
+      {id:2 ,name:'Ann', surname:'Gurt',age:'29', branch:'HR', workingYears:2},
+      {id:3 ,name:'Paul', surname:'Paulsen',age:'29', branch:'IT', workingYears:5},
+      {id:4 ,name:'Peter', surname:'Lynn',age:'44', branch:'Sales', workingYears:4},
+      {id:5 ,name:'Cristine', surname:'Wilson',age:'36', branch:'IT', workingYears:9},
+      {id:6 ,name:'Amanda', surname:'Swizzly',age:'28', branch:'HR', workingYears:2},
+      {id:7 ,name:'Catrine', surname:'Pitch',age:'26', branch:'Sales', workingYears:1},
+      {id:8 ,name:'Leon', surname:'Cruos',age:'62', branch:'Accounts', workingYears:14}
+    ]
+  )
+  const [inputs, setInputs] = useState({
+    name:"",
+    surname:"",
+    age:"",
+    branch:"",
+    workingYears:""
+  })
+
+  function handleSubmit(event){
+    event.preventDefault()
+    
+
+    const newWorker = {
+      id:workers.length+1,
+      name:inputs.name,
+      surname:inputs.surname,
+      age:inputs.age,
+      branch:inputs.branch,
+      workingYears:inputs.workingYears
+    }
+    if(inputs.name==='' || inputs.surname==='' || inputs.age==='' || inputs.branch==='' || inputs.workingYears==='') return null
+    setWorkers([...workers,newWorker])
+    console.log(workers)
+  }
+
+  function handleChange(e){
+      const name = e.target.name
+      const value = e.target.value
+
+     setInputs((prev)=>{
+      return {...prev, [name]:value}
+     })
+  }
+
+  console.log(inputs)
+
+  return(
+    <div className='container'>
+      <ul>
+      {workers &&
+      workers.map(({id,name,surname,age,branch,workingYears})=>{
+       return <WorkerElement key={id} id={id} name={name} surname={surname} age={age} branch={branch} workingYears={workingYears} /> 
+       })}
+      </ul>
+
+      <form onSubmit={handleSubmit}>
+        <h3>Name:</h3> <input type='text' name="name" onChange={handleChange}/>
+        <h3>surname:</h3> <input type='text' name="surname" onChange={handleChange}/>
+        <h3>age:</h3> <input type='text' name="age" onChange={handleChange}/>
+        <h3>branch:</h3> <input type='text' name="branch" onChange={handleChange}/>
+        <h3>working for:</h3> <input type='text' name="workingYears" onChange={handleChange}/>
+
+
+        <button>ADD WORKER</button>
+      </form>
+    </div>
+    )
+}
+
+function WorkerElement({id,name,surname,age,branch,workingYears, onDelete}){
+
+  function handleDelete(){
+    onDelete(id)
+  }
+
+
+  return(
+    <>
+      <li className='worker-element' key={id}>
+       #{id} {name} {surname} age: {age}, branch: {branch}, working for {workingYears} years
+       <button className='delete-btn' onClick={handleDelete}>DELETE</button>   ///////NIE DZIALA
+      </li>
+    </>
+  )
+}
+
+
+
+export default function App(){
+  return(
+    <Workers/>
+  )
+}
